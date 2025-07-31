@@ -18,16 +18,8 @@ environment = {
   DBMONGO: process.env.DBMONGO,
 };
 
-var query =
-  "mongodb+srv://" +
-  environment.DBMONGOUSER +
-  ":" +
-  environment.DBMONGOPASS +
-  "@" +
-  environment.DBMONGOSERV +
-  "/" +
-  environment.DBMONGO +
-  "retryWrites=true&w=majority";
+var query = 'mongodb+srv://' + environment.DBMONGOUSER + ':' + environment.DBMONGOPASS + '@' + environment.DBMONGOSERV + '/' + environment.DBMONGO + '?retryWrites=true&w=majority&appName=Cluster0';
+
 
 const db = query;
 
