@@ -18,8 +18,16 @@ environment = {
   DBMONGO: process.env.DBMONGO,
 };
 
-var query = 'mongodb+srv://' + environment.DBMONGOUSER + ':' + environment.DBMONGOPASS + '@' + environment.DBMONGOSERV + '/' + environment.DBMONGO + '?retryWrites=true&w=majority&appName=Cluster0';
-
+var query =
+  "mongodb+srv://" +
+  environment.DBMONGOUSER +
+  ":" +
+  environment.DBMONGOPASS +
+  "@" +
+  environment.DBMONGOSERV +
+  "/" +
+  environment.DBMONGO +
+  "?retryWrites=true&w=majority&appName=Cluster0";
 
 const db = query;
 
@@ -59,6 +67,45 @@ router.post("/create-task", function (req, res) {
       console.log(err);
       res.status(500).send("Internal error\n");
     });
+});
+
+router.get("/all-tasks", function (req, res) {
+  TaskModel.find()
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send("Internal error\n");
+    });
+});
+
+router.post("/update-task", function (req, res) {
+  TaskModel.updateOne(
+    { TaskId: req.body.TaskId },
+    {
+      Name: req.body.Name,
+      Deadline: req.body.Deadline,
+    }
+  )
+    .then((data) => {
+      res.status(200).send("OK\n");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send("Internal error\n");
+    });
+});
+
+router.delete('/delete-task', function (req, res) {
+    TaskModel.deleteOne({ TaskId: req.body.TaskId })
+        .then(data => {
+            res.status(200).send("OK\n");
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send("Internal error\n");
+        });
 });
 
 module.exports = router;
